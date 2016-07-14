@@ -8,7 +8,7 @@ To run:
 
 1. Clone or download the repository
 2. Create an apikey at http://dev.elsevier.com/myapikey.html and add this to the config.py file
-3. Add repository codes to the reposistory list in config.py (e.g University of Canterbury's code is '10092')
+3. Add repository codes to the reposistory list in config.py (repository codes can be found in the New Zealand Repository Codes text file)
 4. Navigate to the directory on command line
 5. Run the get referenced articles script
 
