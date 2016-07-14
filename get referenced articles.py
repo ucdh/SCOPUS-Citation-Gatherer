@@ -2,10 +2,12 @@ import requests, json, re, csv, time
 from config import apikey, repositories
 import random
 
-repositories = ['10092']
+
+output_file = open("results.txt","w")
+
 '''
-function which runs a search query in scopus. Request number is
-set to 100 and start can be adjusted if there are more records
+A function which runs a search query in SCOPUS. Request number is
+set to 100. Start can be adjusted if there are more records
 '''
 def search(query,start):	
 	articles = requests.get("http://api.elsevier.com/content/search/index:SCOPUS?query=" + query + '&count=100' + '&start=' + str(start),headers={'Accept':'application/json','X-ELS-APIKey':apikey})
@@ -13,8 +15,8 @@ def search(query,start):
 	return json
 
 '''
-function takes a given article id (scopus_id) and returns
-the article json
+A function that takes a given article id (scopus_id) 
+and retrieves the article's json
 '''
 def get_article_info(id):
 	article_info = requests.get("http://api.elsevier.com/content/abstract/scopus_id/" + id,headers={'Accept':'application/json','X-ELS-APIKey':apikey})
@@ -23,9 +25,11 @@ def get_article_info(id):
 	
 
 '''
-function which finds the title, authors, link, and ID for
-a referencing article and any referenced articles that
-meet the regex expression (/repository/some number)
+A function which finds the title, authors, link, and id for
+a referencing article and any cited articles that
+meet the regex expression ("/repository number/some number").
+The information is written to a tab-delimitered
+text file
 '''
 def find_referenced_articles(id,article_info,repository):
 	try:
@@ -90,37 +94,30 @@ def find_referenced_articles(id,article_info,repository):
 								
 					author_lst = '; '.join(author_lst)
 								
-					#dealing with a bunch of encoding issues
-					title = title.replace(u'\u201d',u'"')
-					title = title.replace(u'\u2013',u'-')
-					title = title.replace(u'\u0101',u'a')
-					title = title.replace(u'\u2018',u"'")
-					title = title.replace(u'\u2019',u"'")
-					title = title.replace(",",";")
-						
+											
 					'''returns relavent information. Replaces commas in titles to semi-colons 
 					so csv puts them in one cell. Turns author_lst into a string'''
 								
-					print ','.join([id,referencing_article_url,referencing_article_title,referencing_authors,reference_id,url,title,author_lst])
+					row = '	'.join([id,referencing_article_url,referencing_article_title,referencing_authors,reference_id,url,title,author_lst])
+					output_file.write(row + '\n')
 			except:
 				pass
 	except:
-		print id
+		print "No citations found for " + id
+		
+	output_file.close()
 
-ids = []
+article_ids = []
 
 '''
-Function which runs a search in SCOPUS for a
-given repository. Start is set to 0 and 100 
-is added each time the query is run. When
-the query returns no values, an exception
+A function which runs a search in SCOPUS for a
+given repository. Start is set by the user
+and 100 is added each time the query is run. 
+When the query returns no values, an exception
 is reached and the function returns all 
 the ids
-
-This is basically a way of getting
-around the fact that the SCOPUS API will only
-return a max 200 results at a time.
 '''
+
 def run_query(repository,start):
 	query = "website('" + repository + "')"	
 	articles = search(query,start)		
@@ -137,7 +134,7 @@ def run_query(repository,start):
 #runs search for each research repository
 for repository in repositories:
 	articles = run_query(repository,0)	
-	for id in ids:		
+	for id in article_ids:		
 		info = get_article_info(id)
 		find_referenced_articles(id,info,repository)	
-	id = []
+	article_ids = []
