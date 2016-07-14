@@ -12,7 +12,7 @@ To run:
 4. Navigate to the directory on command line
 5. Run the get referenced articles script
 
-The script returns the referencing and referenced articles' ids, urls, titles, and authors
+The script writes the ids, urls, titles, and authors of the referencing and referenced articles to a tab-delimitered text file
 
 
 
