@@ -33,12 +33,12 @@ text file
 '''
 def find_referenced_articles(id,article_info,repository):
 	referencing_article_title = article_info['abstracts-retrieval-response']['coredata']['dc:title']
-	referencing_article_title = referencing_article_title.replace(',',';')
+	referencing_article_title = referencing_article_title
 				
 	try:
 		referencing_article_authors = article_info['abstracts-retrieval-response']['coredata']['dc:creator']['author']	
 		referencing_author_lst = [author['ce:indexed-name'] for author in referencing_article_authors]
-		referencing_authors = ";".join(referencing_author_lst)
+		referencing_authors = ", ".join(referencing_author_lst)
 	except:
 		referencing_authors = "No author listed"
 				
@@ -98,7 +98,7 @@ def find_referenced_articles(id,article_info,repository):
 					#if can't find any authors, replaces list with 'No author listed' message
 					author_lst = ['No author listed']
 										
-				author_lst = '; '.join(author_lst)
+				author_lst = ', '.join(author_lst)
 														
 				'''							
 				returns relavent information. Replaces commas in titles to semi-colons 
