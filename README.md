@@ -14,6 +14,8 @@ To run:
 
 The script writes the ids, urls, titles, and authors of the referencing and referenced articles to a tab-delimitered text file
 
+Example data can be found here: [Scopus Results 16-07-2016](https://figshare.com/account/projects/14855/articles/3493484)
+
 
 
 
