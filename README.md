@@ -15,7 +15,7 @@ The script writes the ids, urls, titles, and authors of the referencing and refe
 
 **Note:** Since the Elsevier Scopus APIs is often updated, changes to this code will need to be made over time to ensure that it still works. We welcome contributions, pull requests, and any improvements. 
 
-Example data can be found here: [Scopus Results 16-07-2016](https://figshare.com/account/projects/14855/articles/3493484)
+Example data can be found here: [Scopus Results 5-09-2016](https://figshare.com/account/projects/14855/articles/3806307)
 
 
 
