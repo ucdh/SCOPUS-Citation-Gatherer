@@ -9,7 +9,7 @@ To run:
 1. Clone or download the repository
 2. Create an apikey at http://dev.elsevier.com/myapikey.html and add this to the config.py file
 3. Add repository codes to the reposistory list in config.py (NZ repository codes can be found in the New Zealand Repository Codes text file)
-4. Navigate to the directory and run the get_articles.py
+4. Navigate to the directory and run  get_articles.py
 
 The script writes the ids, urls, titles, and authors of the referencing and referenced articles to a tab-delimitered text file
 
