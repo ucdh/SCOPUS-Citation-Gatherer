@@ -13,12 +13,12 @@ import requests, json, re, csv, time
 from config import apikey, repositories
 import codecs
 
-
+#creates output file (results.txt)
 output_file = codecs.open("results.txt", "w",'utf-8')
 
 '''
 A function which runs a search query in SCOPUS. Request number is
-set to 100. Start can be adjusted if there are more records
+set to 100. Start can be adjusted if there are more than 100 records
 '''
 def search(query,start):    
     articles = requests.get("http://api.elsevier.com/content/search/index:SCOPUS?query=" + query + '&count=100' + '&start=' + str(start),headers={'Accept':'application/json','X-ELS-APIKey':apikey})
@@ -40,7 +40,7 @@ A function which finds the title, authors, link, and id for
 a referencing article and any cited articles that
 meet the regex expression ("/repository number/some number").
 The information is written to a tab-delimitered
-text file
+text file (results.txt)
 '''
 def find_referenced_articles(id,article_info,repository):
     referencing_article_title = article_info['abstracts-retrieval-response']['coredata']['dc:title']
@@ -143,6 +143,7 @@ def find_referenced_articles(id,article_info,repository):
                 
                 output_file.write(row + '\n')
 
+#list to store the article ids gathered returned by the search() function                
 article_ids = []
 
 '''
@@ -150,8 +151,8 @@ A function which runs a search in SCOPUS for a
 given repository. Start is set by the user
 and 100 is added each time the query is run. 
 When the query returns no values, an exception
-is reached and the function returns all 
-the ids
+is reached and the function returns the list 
+of article ids
 '''
 
 def run_query(repository,start):
@@ -167,12 +168,17 @@ def run_query(repository,start):
         pass
             
 
-#runs search for each research repository
+'''
+Runs the search(), get_article_info() 
+and find_referenced_articles() functions 
+for each repository in the repository list.
+'''
 for repository in repositories:
     articles = run_query(repository,0)    
     for id in article_ids:        
         info = get_article_info(id)
         find_referenced_articles(id,info,repository)
+    #empties the article_id list
     article_ids = []
 output_file.close()
     
